@@ -1,4 +1,4 @@
-package com.okaru.customer;
+package com.okaru.clients.fraud;
 
 public record FraudCheckResponse(Boolean isFraudster) {
 }
