@@ -2,6 +2,7 @@ package com.okaru.customer;
 
 import com.okaru.clients.fraud.FraudCheckResponse;
 import com.okaru.clients.fraud.FraudClient;
+import com.okaru.clients.fraud.NotificationClient;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +15,8 @@ public class CustomerService {
 
     // Dependencia injectada de feign client
     private final FraudClient fraudClient;
+
+    private final NotificationClient notificationClient;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -31,10 +34,17 @@ public class CustomerService {
 
         FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
+        String msg = "not a Fraud";
+
         if(fraudCheckResponse.isFraudster()){
             throw new IllegalStateException("frauster");
         }
+        else{
+            notificationClient.sendMessage(msg, customer.getId());
+        }
 //        customerRepository.save(customer);
     }
+
+
 
 }
