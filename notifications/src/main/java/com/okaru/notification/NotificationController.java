@@ -1,30 +1,36 @@
 package com.okaru.notification;
 
 
-import com.okaru.clients.fraud.NotificationResponse;
+import com.okaru.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("api/v1/notification/")
+@RequestMapping("api/v1/notification")
 @AllArgsConstructor
 @Slf4j
 public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @GetMapping(path= "{msg}/{customerId}")
-    public NotificationResponse sentMessage(@PathVariable("msg") String msg, @PathVariable("customerId") Integer customerId){
+//    My mistake
+//    @GetMapping(path= "{msg}/{customerId}")
+//    public NotificationRequest sentMessage(@PathVariable("msg") String msg, @PathVariable("customerId") Integer customerId){
+//
+//        notificationService.sendMessage(msg, customerId);
+//
+//        log.info("Message was sent succesfully with " + customerId + " id");
+//
+//        return new NotificationRequest(msg, customerId);
+//    }
 
-        notificationService.sendMessage(msg, customerId);
+    @PostMapping
+    public void sentNotification(@RequestBody NotificationRequest notificationRequest){
 
-        log.info("Message was sent succesfully with " + customerId + " id");
+        log.info("New Notification... {} ", notificationRequest);
 
-        return new NotificationResponse(msg, customerId);
+        notificationService.sendMessage(notificationRequest);
     }
 }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -25,6 +26,9 @@ public class Notification {
     )
     private Integer id;
     private Integer customerId;
+    private String CustomerEmail;
     private String message;
+    private String sender;
+    private LocalDateTime sentAt;
 
 }

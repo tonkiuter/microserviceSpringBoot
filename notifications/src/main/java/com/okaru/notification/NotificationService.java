@@ -1,8 +1,10 @@
 package com.okaru.notification;
 
-import com.okaru.clients.fraud.NotificationResponse;
+import com.okaru.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
@@ -12,15 +14,17 @@ public class NotificationService {
 
 //    private final NotificationResponse notificationResponse;
 
-    public String sendMessage(String msg, Integer customerId){
+    public void sendMessage(NotificationRequest notificationRequest){
         notificationRepository.save(
                 Notification.builder()
-                        .customerId(customerId)
-                        .message(msg)
+                        .customerId(notificationRequest.customerId())
+                        .CustomerEmail(notificationRequest.customerEmail())
+                        .message(notificationRequest.message())
+                        .sender("Okaru")
+                        .sentAt(LocalDateTime.now())
                         .build()
         );
 
-        return msg;
     }
 
 }

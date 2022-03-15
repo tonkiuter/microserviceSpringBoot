@@ -2,7 +2,8 @@ package com.okaru.customer;
 
 import com.okaru.clients.fraud.FraudCheckResponse;
 import com.okaru.clients.fraud.FraudClient;
-import com.okaru.clients.fraud.NotificationClient;
+import com.okaru.clients.notification.NotificationClient;
+import com.okaru.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -39,9 +40,13 @@ public class CustomerService {
         if(fraudCheckResponse.isFraudster()){
             throw new IllegalStateException("frauster");
         }
-        else{
-            notificationClient.sendMessage(msg, customer.getId());
-        }
+            notificationClient.sendNotification(
+                    new NotificationRequest(
+                            String.format("Hi %s, welcome to Amigoscode Course <3", customer.getFirstName()),
+                            customer.getId(),
+                            customer.getEmail()
+                    )
+            );
 //        customerRepository.save(customer);
     }
 
